@@ -81,7 +81,44 @@ const PostItem = ({ post}: PostItemProps) => {
                 {!isPaid ? (
                     <>
                         <Text style={{ fontSize: 18, lineHeight: 26, color: tokens.colors.textPrimary, fontWeight: "bold", marginBottom: 8 }}>{post.title}</Text>
-                        <Text style={{fontSize: 15, lineHeight: 20, color: tokens.colors.textPrimary, fontWeight: "medium", marginBottom: 16}}>{post.body}</Text>
+                        <View style={{ position: 'relative', marginBottom: 16 }}>
+                            <Text
+                                style={{
+                                    fontSize: 15,
+                                    lineHeight: 20,
+                                    color: tokens.colors.textPrimary,
+                                    fontWeight: "medium"
+                                }}
+                                numberOfLines={2}
+                            >
+                                {post.body}
+                            </Text>
+
+                            <View style={{
+                                position: 'absolute',
+                                bottom: 0,
+                                right: 0,
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                            }}>
+                                <View style={{
+                                    width: 20,
+                                    height: 20,
+                                    backgroundColor: '#FFFFFF',
+                                    opacity: 0.8
+                                }} />
+
+                                <Text style={{
+                                    color: '#6115CD',
+                                    fontSize: 15,
+                                    lineHeight: 20,
+                                    fontWeight: '500',
+                                    backgroundColor: "white"
+                                }}>
+                                    Показать еще
+                                </Text>
+                            </View>
+                        </View>
 
                         <View style={{display: "flex", flexDirection: "row", alignItems: "center", gap: 8}}>
                             <View style={{display: "flex", flexDirection: "row", alignItems: "center", gap: 8, height: 36, backgroundColor: "#EFF2F7", borderRadius: 999, paddingHorizontal: 12}}>
