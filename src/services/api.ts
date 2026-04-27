@@ -49,6 +49,18 @@ export const apiClient = {
         return data as PostDetailResponse;
     },
 
+    getComments: async (postId: string, params: { limit?: number; cursor?: string | null }): Promise<CommentsResponse> => {
+        const query = new URLSearchParams();
+        if (params.limit) query.set('limit', params.limit.toString());
+        if (params.cursor) query.set('cursor', params.cursor);
+
+        const response = await fetch(`${API_BASE_URL}/posts/${postId}/comments?${query.toString()}`, {
+            headers: { 'Authorization': `Bearer ${TOKEN}` },
+        });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return await response.json() as Promise<CommentsResponse>;
+    },
+
     // toggleLike: async (postId: string): Promise<{ isLiked: boolean; likesCount: number }> => {
     //     const response = await fetch(`${API_BASE_URL}/posts/${postId}/like?token=${TOKEN}`, { method: 'POST' });
     //     if (!response.ok) throw new Error(`HTTP ${response.status}`);
