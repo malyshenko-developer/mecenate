@@ -1,5 +1,5 @@
-import React from 'react';
-import {View, Text, Button, ActivityIndicator, FlatList, RefreshControl, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, ActivityIndicator, FlatList, RefreshControl, TouchableOpacity} from 'react-native';
 import { observer } from 'mobx-react';
 
 import MaskotSvg from '../../assets/icons/maskot.svg';
@@ -7,9 +7,15 @@ import MaskotSvg from '../../assets/icons/maskot.svg';
 import {usePosts} from "../hooks/usePosts";
 import PostItem from "../components/PostItem";
 import {tokens} from "../constants/tokens";
+import {FeedTabs} from "../components/FeedTabs";
+
+type TabType = 'all' | 'free' | 'paid';
 
 const FeedScreen = observer(() => {
-    const { data, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } = usePosts()
+    const [activeTab, setActiveTab] = useState<TabType>('all');
+    const { data, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } = usePosts(
+        activeTab === 'all' ? undefined : activeTab
+    );
 
     if (isLoading) return <ActivityIndicator size={"large"} />;
 
@@ -42,6 +48,9 @@ const FeedScreen = observer(() => {
     const posts = data?.pages.flatMap(page => page.data.posts) || []
 
     return (
+        <View style={{ flex: 1 }}>
+            <FeedTabs activeTab={activeTab} onTabChange={setActiveTab}  />
+
             <FlatList
                 data={posts}
                 renderItem={({ item }) => <PostItem post={item} />}
@@ -64,6 +73,7 @@ const FeedScreen = observer(() => {
 
                 style={{ flex: 1, backgroundColor: '#F5F8FD' }}
             />
+        </View>
     );
 });
 
