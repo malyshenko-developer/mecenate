@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, ActivityIndicator, FlatList, RefreshControl, TouchableOpacity} from 'react-native';
 import { observer } from 'mobx-react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import MaskotSvg from '../../assets/icons/maskot.svg';
 
@@ -48,7 +49,7 @@ const FeedScreen = observer(() => {
     const posts = data?.pages.flatMap(page => page.data.posts) || []
 
     return (
-        <View style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#F5F8FD' }}>
             <FeedTabs activeTab={activeTab} onTabChange={setActiveTab}  />
 
             <FlatList
@@ -73,7 +74,7 @@ const FeedScreen = observer(() => {
 
                 style={{ flex: 1, backgroundColor: '#F5F8FD' }}
             />
-        </View>
+        </SafeAreaView>
     );
 });
 
