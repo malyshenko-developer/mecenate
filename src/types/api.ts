@@ -29,26 +29,3 @@ export interface Comment {
     text: string;
     createdAt: string;
 }
-
-export interface PostsResponse {
-    ok: true;
-    data: {
-        posts: Post[];
-        nextCursor: string | null;
-        hasMore: boolean;
-    };
-}
-
-export interface PostDetailResponse {
-    ok: true;
-    data: { post: Post };
-}
-
-export interface CommentsResponse {
-    ok: true;
-    data: {
-        comments: Comment[];
-        nextCursor: string | null;
-        hasMore: boolean;
-    };
-}

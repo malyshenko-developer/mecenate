@@ -1,22 +1,39 @@
 import React from 'react';
-import {View, Text, Button} from 'react-native';
+import {View, Text, Button, ActivityIndicator, FlatList, RefreshControl} from 'react-native';
 import { observer } from 'mobx-react';
-import {useNavigation} from "@react-navigation/native";
-import {NativeStackNavigationProp} from "@react-navigation/native-stack";
-
-import {RootStackParamList} from "../types/navigation";
+import {usePosts} from "../hooks/usePosts";
+import PostItem from "../components/PostItem";
 
 const FeedScreen = observer(() => {
-    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+    const { data, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } = usePosts()
+
+    if (isLoading) return <ActivityIndicator size={"large"} />;
+
+    const posts = data?.pages.flatMap(page => page.data.posts) || []
 
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Feed Screen</Text>
-            <Button
-                title="Go to PostDetail"
-                onPress={() => navigation.navigate('PostDetail', { postId: 'test-123' })}
+            <FlatList
+                data={posts}
+                renderItem={({ item }) => <PostItem post={item} />}
+                keyExtractor={item => item.id}
+                onEndReached={() => hasNextPage && fetchNextPage()}
+                onEndReachedThreshold={0.1}
+                ListFooterComponent={
+                    isFetchingNextPage ? (
+                        <ActivityIndicator style={{ padding: 20 }} />
+                    ) : null
+                }
+                refreshControl={
+                    <RefreshControl refreshing={isLoading} onRefresh={refetch} />
+                }
+                contentContainerStyle={{
+                    paddingBottom: 40
+                }}
+                showsVerticalScrollIndicator={false}
+                ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
+
+                style={{ flex: 1, backgroundColor: '#F5F8FD' }}
             />
-        </View>
     );
 });
 
