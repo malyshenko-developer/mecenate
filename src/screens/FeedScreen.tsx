@@ -23,14 +23,14 @@ const FeedScreen = observer(() => {
     if (error) return (
         <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
             <MaskotSvg />
-            <Text style={{marginTop: 32, marginBottom: 16, fontSize: 18, lineHeight: 26, fontWeight: "bold", color: tokens.colors.textPrimary}}>Не удалось загрузить публикации</Text>
+            <Text style={{marginTop: tokens.space.xl, marginBottom: tokens.space.lg, ...tokens.typography.h4, fontWeight: "bold", color: tokens.colors.textPrimary}}>Не удалось загрузить публикации</Text>
             <TouchableOpacity style={{
                 minWidth: 239,
-                backgroundColor: '#6115CD',
-                paddingTop: 8,
-                paddingBottom: 8,
-                paddingHorizontal: 24,
-                borderRadius: 14,
+                backgroundColor: tokens.colors.brandPrimary,
+                paddingTop: tokens.space.sm,
+                paddingBottom: tokens.space.sm,
+                paddingHorizontal: tokens.space.xl,
+                borderRadius: tokens.radii.md,
                 alignItems: 'center',
             }} onPress={() => refetch()}>
                 <Text style={{
@@ -49,7 +49,7 @@ const FeedScreen = observer(() => {
     const posts = data?.pages.flatMap(page => page.data.posts) || []
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: '#F5F8FD' }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: tokens.colors.bgScreen }}>
             <FeedTabs activeTab={activeTab} onTabChange={setActiveTab}  />
 
             <FlatList
@@ -72,7 +72,7 @@ const FeedScreen = observer(() => {
                 showsVerticalScrollIndicator={false}
                 ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
 
-                style={{ flex: 1, backgroundColor: '#F5F8FD' }}
+                style={{ flex: 1, backgroundColor: tokens.colors.bgScreen }}
             />
         </SafeAreaView>
     );

@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 
+import {tokens} from "../constants/tokens";
+
 type TabType = 'all' | 'free' | 'paid';
 
 interface FeedTabsProps {
@@ -19,11 +21,11 @@ export const FeedTabs = ({ activeTab, onTabChange }: FeedTabsProps) => {
 
     return (
         <View style={{
-            paddingHorizontal: 16,
-            paddingVertical: 16,
-            backgroundColor: '#F5F8FD'
+            paddingHorizontal: tokens.space.lg,
+            paddingVertical: tokens.space.lg,
+            backgroundColor: tokens.colors.bgScreen
         }}>
-            <View style={{ flexDirection: 'row', justifyContent: "space-between", backgroundColor: "white", borderRadius: 999, borderColor: "#E8ECEF", borderWidth: 1 }}>
+            <View style={{ flexDirection: 'row', justifyContent: "space-between", backgroundColor: tokens.colors.bgCard, borderRadius: tokens.radii.pill, borderColor: tokens.colors.border, borderWidth: 1 }}>
                 {tabs.map(tab => {
                     const isActive = activeTab === tab;
                     return (
@@ -32,8 +34,8 @@ export const FeedTabs = ({ activeTab, onTabChange }: FeedTabsProps) => {
                             style={{
                                 paddingHorizontal: 20,
                                 paddingVertical: 10,
-                                borderRadius: 22,
-                                backgroundColor: isActive ? '#6115CD' : 'white',
+                                borderRadius: tokens.radii.lg,
+                                backgroundColor: isActive ? tokens.colors.brandPrimary : tokens.colors.bgCard,
                                 flex: 1,
                             }}
                             onPress={() => onTabChange(tab)}
@@ -43,7 +45,7 @@ export const FeedTabs = ({ activeTab, onTabChange }: FeedTabsProps) => {
                                 fontSize: 13,
                                 lineHeight: 18,
                                 fontWeight: isActive ? '700' : '500',
-                                color: isActive ? '#FFFFFF' : '#57626F',
+                                color: isActive ? tokens.colors.white : tokens.colors.textSecondary,
                                 textAlign: "center"
                             }}>
                                 {tabLabels[tab]}
