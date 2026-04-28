@@ -1,5 +1,5 @@
 import React from 'react';
-import {ActivityIndicator, FlatList, RefreshControl} from 'react-native';
+import {ActivityIndicator, FlatList, RefreshControl, Text, View} from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 
 import {RootStackParamList} from "../types/navigation";
@@ -8,6 +8,7 @@ import {PostComment} from "../components/PostComment";
 import {tokens} from "../constants/tokens";
 import PostItem from "../components/PostItem";
 import {SafeAreaView} from "react-native-safe-area-context";
+import {commentsPlural} from "../utils/pluralize";
 
 type PostDetailScreenRouteProp = RouteProp<RootStackParamList, 'PostDetail'>
 
@@ -53,6 +54,10 @@ const PostDetailScreen = ({ route }: PostDetailScreenProps) => {
                 ListHeaderComponent={
                 <>
                     {post && <PostItem post={post} mode={"full"} />}
+                    <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingHorizontal: tokens.space.lg, paddingTop: tokens.space.xs, paddingBottom: tokens.space.sm, backgroundColor: tokens.colors.bgCard }}>
+                        <Text style={{ color: tokens.colors.textMuted, fontWeight: "semibold", ...tokens.typography.body }}>{post?.commentsCount} {commentsPlural(post?.commentsCount || 0)}</Text>
+                        <Text style={{ color: tokens.colors.brandPrimary, fontWeight: "medium", ...tokens.typography.body }}>Сначала новые</Text>
+                    </View>
                 </>
                 }
                 ListFooterComponent={
