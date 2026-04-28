@@ -62,7 +62,7 @@ const PostDetailScreen = ({ route }: PostDetailScreenProps) => {
             <FlatList
                 data={comments}
                 renderItem={({ item }) => <PostComment comment={item} />}
-                keyExtractor={(item) => item.id}
+                keyExtractor={(item, index) => `${item.id}-${index}`}
                 refreshControl={
                     <RefreshControl refreshing={postLoading || commentsLoading} onRefresh={onRefresh} />
                 }
@@ -90,7 +90,7 @@ const PostDetailScreen = ({ route }: PostDetailScreenProps) => {
                 style={{ backgroundColor: tokens.colors.bgScreen }}
             />
 
-            <CommentInput />
+            <CommentInput postId={postId} />
             </KeyboardAvoidingView>
         </SafeAreaView>
 

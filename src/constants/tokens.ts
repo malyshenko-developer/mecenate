@@ -15,6 +15,12 @@ export const tokens = {
         white: '#FFFFFF',
 
         overlayDark: 'rgba(0,0,0,0.5)',
+
+        purple: {
+            100: '#D5C9FF',
+            400: '#6115CD',
+            600: '#3A0D7B',
+        }
     },
     space: {
         xs: 4,

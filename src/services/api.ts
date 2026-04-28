@@ -61,6 +61,22 @@ export const apiClient = {
         return await response.json() as Promise<CommentsResponse>;
     },
 
+    createComment: async (postId: string, text: string): Promise<Comment> => {
+        const response = await fetch(`${API_BASE_URL}/posts/${postId}/comments`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${TOKEN}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ text }),
+        });
+
+        const result = await response.json();
+        const comment = result.data.comment;
+
+        return comment as Comment;
+    },
+
     // toggleLike: async (postId: string): Promise<{ isLiked: boolean; likesCount: number }> => {
     //     const response = await fetch(`${API_BASE_URL}/posts/${postId}/like?token=${TOKEN}`, { method: 'POST' });
     //     if (!response.ok) throw new Error(`HTTP ${response.status}`);

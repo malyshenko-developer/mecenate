@@ -18,7 +18,7 @@ export const PostComment = ({ comment }: PostCommentProps) => {
                 backgroundColor: tokens.colors.white
             }}>
                 <Image
-                    source={{ uri: comment.author.avatarUrl }}
+                    source={{ uri: comment.author.avatarUrl}}
                     style={{
                         width: 40,
                         height: 40,
