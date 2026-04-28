@@ -1,5 +1,14 @@
 import React from 'react';
-import {ActivityIndicator, FlatList, RefreshControl, Text, View} from 'react-native';
+import {
+    ActivityIndicator,
+    FlatList,
+    Keyboard,
+    KeyboardAvoidingView,
+    Platform,
+    RefreshControl,
+    Text, TouchableWithoutFeedback,
+    View
+} from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 
 import {RootStackParamList} from "../types/navigation";
@@ -9,6 +18,8 @@ import {tokens} from "../constants/tokens";
 import PostItem from "../components/PostItem";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {commentsPlural} from "../utils/pluralize";
+import {CommentInput} from "../components/CommentInput";
+import {useBehavior} from "../hooks/useBehavior";
 
 type PostDetailScreenRouteProp = RouteProp<RootStackParamList, 'PostDetail'>
 
@@ -18,6 +29,7 @@ interface PostDetailScreenProps {
 
 const PostDetailScreen = ({ route }: PostDetailScreenProps) => {
     const { postId } = route.params || {};
+    const behaviour = useBehavior()
 
     const { data: post, isLoading: postLoading, refetch } = usePostDetail(postId);
     const {
@@ -42,6 +54,11 @@ const PostDetailScreen = ({ route }: PostDetailScreenProps) => {
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: tokens.colors.bgScreen }}>
+            <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior={behaviour}
+                enabled
+            >
             <FlatList
                 data={comments}
                 renderItem={({ item }) => <PostComment comment={item} />}
@@ -69,10 +86,14 @@ const PostDetailScreen = ({ route }: PostDetailScreenProps) => {
                     ) : null
                 }
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ paddingBottom: tokens.space.xxxl }}
+                contentContainerStyle={{ paddingBottom: tokens.space.sm }}
                 style={{ backgroundColor: tokens.colors.bgScreen }}
             />
+
+            <CommentInput />
+            </KeyboardAvoidingView>
         </SafeAreaView>
+
     );
 };
 
