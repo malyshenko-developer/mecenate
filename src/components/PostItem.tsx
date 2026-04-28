@@ -1,32 +1,29 @@
 import {Image, TouchableOpacity, View, Text} from "react-native";
-import {NativeStackNavigationProp} from "@react-navigation/native-stack";
-import {useNavigation} from "@react-navigation/native";
 
 import LikeSvg from '../../assets/icons/like.svg';
 import CommentSvg from '../../assets/icons/comment.svg';
 import DollarSvg from '../../assets/icons/dollar.svg';
 
 import {Post} from "../types/api";
-import {RootStackParamList} from "../types/navigation";
 import {tokens} from "../constants/tokens";
-
-type Navigation = NativeStackNavigationProp<RootStackParamList>;
 
 interface PostItemProps {
     post: Post
+    mode: "list" | "full"
+    onPress?: () => void
 }
 
-const PostItem = ({ post}: PostItemProps) => {
-    const navigation = useNavigation<Navigation>();
-
+const PostItem = ({ post, mode="list", onPress }: PostItemProps) => {
     const isPaid = post.tier === 'paid';
+    const isTouchable = mode === "list" && onPress
 
-    const handlePress = () => {
-        navigation.navigate('PostDetail', { postId: post.id });
-    };
+    const Container = isTouchable ? TouchableOpacity : View
+    const containerProps = isTouchable ? { onPress } : {}
+
+    const showFullBody = mode === "full"
 
     return (
-        <TouchableOpacity onPress={handlePress} style={{ backgroundColor: tokens.colors.bgCard, borderRadius: tokens.radii.sm  }}>
+        <Container {...containerProps} style={{ backgroundColor: tokens.colors.bgCard, borderRadius: tokens.radii.sm  }}>
             <View style={{ paddingTop: tokens.space.md, paddingBottom: tokens.space.lg, paddingHorizontal: tokens.space.lg, flexDirection: "row", alignItems: "center", gap: tokens.space.md }}>
                 <Image source={{uri: post.author.avatarUrl}} style={{ width: 40, height: 40, borderRadius: tokens.radii.pill }} />
                 <Text style={{ fontWeight: 'bold' }}>{post.author.displayName}</Text>
@@ -92,34 +89,36 @@ const PostItem = ({ post}: PostItemProps) => {
                                     color: tokens.colors.textPrimary,
                                     fontWeight: "medium"
                                 }}
-                                numberOfLines={2}
+                                numberOfLines={showFullBody ? undefined : 2}
                             >
                                 {post.body}
                             </Text>
 
-                            <View style={{
-                                position: 'absolute',
-                                bottom: 0,
-                                right: 0,
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                            }}>
+                            {!showFullBody && (
                                 <View style={{
-                                    width: 20,
-                                    height: 20,
-                                    backgroundColor: tokens.colors.white,
-                                    opacity: 0.8
-                                }} />
-
-                                <Text style={{
-                                    color: tokens.colors.brandPrimary,
-                                    ...tokens.typography.body,
-                                    fontWeight: '500',
-                                    backgroundColor: tokens.colors.white
+                                    position: 'absolute',
+                                    bottom: 0,
+                                    right: 0,
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
                                 }}>
-                                    Показать еще
-                                </Text>
-                            </View>
+                                    <View style={{
+                                        width: 20,
+                                        height: 20,
+                                        backgroundColor: tokens.colors.white,
+                                        opacity: 0.8
+                                    }} />
+
+                                    <Text style={{
+                                        color: tokens.colors.brandPrimary,
+                                        ...tokens.typography.body,
+                                        fontWeight: '500',
+                                        backgroundColor: tokens.colors.white
+                                    }}>
+                                        Показать еще
+                                    </Text>
+                                </View>
+                            )}
                         </View>
 
                         <View style={{display: "flex", flexDirection: "row", alignItems: "center", gap: tokens.space.sm}}>
@@ -151,7 +150,7 @@ const PostItem = ({ post}: PostItemProps) => {
                     </>
                 )}
             </View>
-        </TouchableOpacity>
+        </Container>
     )
 }
 

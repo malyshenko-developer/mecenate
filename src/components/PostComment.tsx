@@ -13,7 +13,9 @@ export const PostComment = ({ comment }: PostCommentProps) => {
             <View style={{
                 flexDirection: 'row',
                 gap: tokens.space.md,
-                paddingVertical: tokens.space.sm
+                paddingVertical: tokens.space.sm,
+                paddingHorizontal: tokens.space.lg,
+                backgroundColor: tokens.colors.white
             }}>
                 <Image
                     source={{ uri: comment.author.avatarUrl }}

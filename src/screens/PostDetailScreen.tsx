@@ -40,7 +40,7 @@ const PostDetailScreen = ({ route }: PostDetailScreenProps) => {
     }
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: tokens.colors.bgScreen, paddingHorizontal: tokens.space.lg }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: tokens.colors.bgScreen }}>
             <FlatList
                 data={comments}
                 renderItem={({ item }) => <PostComment comment={item} />}
@@ -50,6 +50,11 @@ const PostDetailScreen = ({ route }: PostDetailScreenProps) => {
                 }
                 onEndReached={() => hasNextPage && fetchNextPage()}
                 onEndReachedThreshold={0.1}
+                ListHeaderComponent={
+                <>
+                    {post && <PostItem post={post} mode={"full"} />}
+                </>
+                }
                 ListFooterComponent={
                     isFetchingNextPage ? (
                         <ActivityIndicator

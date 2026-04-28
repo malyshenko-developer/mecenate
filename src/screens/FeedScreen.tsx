@@ -6,9 +6,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import MaskotSvg from '../../assets/icons/maskot.svg';
 
 import {usePosts} from "../hooks/usePosts";
+import {useRootNavigation} from "../hooks/useRootNavigation";
+
 import PostItem from "../components/PostItem";
-import {tokens} from "../constants/tokens";
 import {FeedTabs} from "../components/FeedTabs";
+
+import {tokens} from "../constants/tokens";
 
 type TabType = 'all' | 'free' | 'paid';
 
@@ -17,6 +20,8 @@ const FeedScreen = observer(() => {
     const { data, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } = usePosts(
         activeTab === 'all' ? undefined : activeTab
     );
+
+    const navigation = useRootNavigation();
 
     if (isLoading) return <ActivityIndicator size={"large"} />;
 
@@ -54,7 +59,7 @@ const FeedScreen = observer(() => {
 
             <FlatList
                 data={posts}
-                renderItem={({ item }) => <PostItem post={item} />}
+                renderItem={({ item }) => <PostItem post={item} mode={"list"} onPress={() => navigation.navigate('PostDetail', { postId: item.id })} />}
                 keyExtractor={item => item.id}
                 onEndReached={() => hasNextPage && fetchNextPage()}
                 onEndReachedThreshold={0.1}
