@@ -77,12 +77,19 @@ export const apiClient = {
         return comment as Comment;
     },
 
-    // toggleLike: async (postId: string): Promise<{ isLiked: boolean; likesCount: number }> => {
-    //     const response = await fetch(`${API_BASE_URL}/posts/${postId}/like?token=${TOKEN}`, { method: 'POST' });
-    //     if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    //     const data = await response.json();
-    //     return data.data;
-    // },
+    toggleLike: async (postId: string): Promise<{ isLiked: boolean; likesCount: number }> => {
+        const response = await fetch(`${API_BASE_URL}/posts/${postId}/like`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${TOKEN}`,
+            },
+        });
+
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+        const result = await response.json();
+        return result.data
+    },
 } as const;
 
 export interface PostsResponse {

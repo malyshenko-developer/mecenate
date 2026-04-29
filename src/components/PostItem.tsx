@@ -1,11 +1,11 @@
 import {Image, TouchableOpacity, View, Text} from "react-native";
 
-import LikeSvg from '../../assets/icons/like.svg';
 import CommentSvg from '../../assets/icons/comment.svg';
 import DollarSvg from '../../assets/icons/dollar.svg';
 
 import {Post} from "../types/api";
 import {tokens} from "../constants/tokens";
+import {LikeButton} from "./LikeButton";
 
 interface PostItemProps {
     post: Post
@@ -122,16 +122,7 @@ const PostItem = ({ post, mode="list", onPress }: PostItemProps) => {
                         </View>
 
                         <View style={{display: "flex", flexDirection: "row", alignItems: "center", gap: tokens.space.sm}}>
-                            <View style={{display: "flex", flexDirection: "row", alignItems: "center", gap: tokens.space.sm, height: 36, backgroundColor: tokens.colors.bgPill,
-                                borderRadius: tokens.radii.pill, paddingHorizontal: tokens.space.md}}>
-                                <LikeSvg width={16} height={16} />
-                                <Text style={{ ...tokens.typography.caption,
-                                    color: tokens.colors.textSecondary,
-                                    fontWeight: "bold"
-                                }}>
-                                    {post.likesCount}
-                                </Text>
-                            </View>
+                            <LikeButton postId={post.id} likesCount={post.likesCount} isLiked={post.isLiked} />
                             <View style={{display: "flex", flexDirection: "row", alignItems: "center", gap: tokens.space.sm, height: 36, backgroundColor: tokens.colors.bgPill,
                                 borderRadius: tokens.radii.pill, paddingHorizontal: tokens.space.md}}>
                                 <CommentSvg width={16} height={16} />
