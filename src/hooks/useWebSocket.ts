@@ -57,13 +57,25 @@ export const useWebSocket = () => {
             queryClient.setQueryData<InfiniteData<CommentsResponse>>(
                 ['comments', postId],
                 (oldData) => {
-                    if (!oldData?.pages) return oldData;
+                    if (!oldData?.pages?.length) {
+                        // Если кэш пуст, создаём первую страницу
+                        const newPage: CommentsResponse = {
+                            ok: true,
+                            data: {
+                                comments: [comment],
+                                nextCursor: null,
+                                hasMore: false,
+                            },
+                        };
+                        return { pages: [newPage], pageParams: [null] } as InfiniteData<CommentsResponse>;
+                    }
                     const newPages = [...oldData.pages];
-                    newPages[0] = {
-                        ...newPages[0],
+                    const lastIdx = newPages.length - 1;
+                    newPages[lastIdx] = {
+                        ...newPages[lastIdx],
                         data: {
-                            ...newPages[0].data,
-                            comments: [...newPages[0].data.comments, comment],
+                            ...newPages[lastIdx].data,
+                            comments: [...newPages[lastIdx].data.comments, comment],
                         },
                     };
                     return { ...oldData, pages: newPages };
