@@ -10,8 +10,14 @@ class RootStore {
         makeAutoObservable(this);
     }
 
-    setLike(postId: string, isLiked: boolean, likesCount: number) {
-        this.likes.set(postId, { isLiked, likesCount });
+    setWebsocketConnected(connected: boolean) {
+        this.websocketConnected = connected;
+    }
+
+    setLike(postId: string, isLiked: boolean | undefined, likesCount: number) {
+        const existing = this.likes.get(postId);
+        const newIsLiked = isLiked !== undefined ? isLiked : (existing?.isLiked ?? false);
+        this.likes.set(postId, { isLiked: newIsLiked, likesCount });
     }
 
     getLike(postId: string) {
